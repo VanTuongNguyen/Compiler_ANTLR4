@@ -1,0 +1,9 @@
+        procedure main();
+        begin
+            if a then
+                if b then
+                    if c then
+                        if d then
+                            e();
+        end
+        

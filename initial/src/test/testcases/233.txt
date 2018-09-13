@@ -1,0 +1,8 @@
+        procedure main(a,b:real; d:string);
+            var h,c: integer;
+            j,k: real;
+            c: array[1 .. 3] of string;
+        begin
+            
+        end
+        

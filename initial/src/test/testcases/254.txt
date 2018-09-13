@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            a:= foo(12,12a,abc);
+        end
+        

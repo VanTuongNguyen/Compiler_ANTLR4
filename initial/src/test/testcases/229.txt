@@ -1,0 +1,9 @@
+        procedure main();
+        begin
+            foo(1,2,3,4);
+            with a,b,c:integer; d:real; e:array[1 .. 2] of boolean; g: string; do
+                begin
+                    return foo(12,3,a,b);
+                end
+        end
+        

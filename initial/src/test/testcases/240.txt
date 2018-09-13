@@ -1,0 +1,6 @@
+        procedure main();
+        begin
+            print("hello
+            world");
+        end
+        

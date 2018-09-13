@@ -1,0 +1,6 @@
+        function main(): string;
+        var a: string;
+        begin
+            
+        end
+        

@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            __:=__;
+        end
+        

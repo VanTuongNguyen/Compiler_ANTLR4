@@ -1,0 +1,6 @@
+        var a: array[1..2] of real;
+        procedure main();
+        begin
+            
+        end
+        

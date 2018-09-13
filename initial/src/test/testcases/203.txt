@@ -1,1 +1,5 @@
-int main( {}
+        procedure main();
+        begin
+            a := a[1][2][3];
+        end
+        

@@ -1,0 +1,6 @@
+        procedure main();
+        begin
+            for i:=a[1] to a[2] do c();
+            for i:=foo(a[1]+1)[1] to 1 do c();
+        end
+        
