@@ -1,8 +1,13 @@
-        procedure main(a,b:real; d:string);
-            var h,c: integer;
-            j,k: real;
-            c: array[1 .. 3] of string;
-        begin
-            
-        end
+
+Var 
+   S : String;
+   i : Integer;
+
+Procedure main();
+Begin
+	S := "Hey! How are you?";
+	For i := 1 to length(S) do
+		S[i] := UpCase(S[i]);
+	Write(S); { "HEY! HOW ARE YOU?" }
+End
         

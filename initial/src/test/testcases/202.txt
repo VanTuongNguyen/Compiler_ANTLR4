@@ -1,5 +1,14 @@
-        procedure main();
-        begin
-            a := foo(1+a[i-goo(t*hoo(t[x]))]*6-(a[(2+1)*3]+1)*a[2])[(2-5)+a[x]];
-        end
+
+Var       
+    Num1, Num2, Sum : Integer;
+Procedure main();
+Begin {no semicolon}
+	Write("Input number 1:"); 
+	Readln(Num1);
+	Writeln("Input number 2:");
+	Readln(Num2);
+	Sum := Num1 + Num2; {addition} 
+	Writeln(Sum);
+	Readln();
+End
         

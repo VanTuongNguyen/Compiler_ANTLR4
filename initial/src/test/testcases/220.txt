@@ -1,15 +1,10 @@
-        procedure main();
-        begin
-            if a then
-                begin
-                    f(); g();
-                end
-            else
-                if b then
-                    f();
-                else
-                    begin
-                        c(); d();
-                    end
-        end
+
+Var
+	UFile : String; { or it could be of "file" type}
+
+Procedure Main();
+Begin
+	Assign(UFile, "C:\\ADDTEXT.TXT");
+	Erase(UFile); 
+End
         

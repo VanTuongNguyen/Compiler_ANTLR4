@@ -1,8 +1,11 @@
-        procedure main();
-            var h,c: integer;
-            j,k: real;
-            c: array[1 .. 3] of string;
-        begin
-            
-        end
+
+Var 
+	S1, S2 : String;
+
+Procedure main();
+Begin
+	S1 := "Hey!";
+	S2 := " How are you?";
+	Write(S1 + S2); { "Hey! How are you?" }
+End
         

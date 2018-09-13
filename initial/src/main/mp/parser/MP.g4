@@ -196,7 +196,7 @@ fragment DQUOTE:
 fragment BSL: 
     '\\\\';
 
-LEGAL_ESCAPE:
+fragment LEGAL_ESCAPE:
     BSP
     | FF
     | CR
@@ -208,10 +208,11 @@ LEGAL_ESCAPE:
     ;
 
 
-ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\r\n\t'\\]
-    {raise IllegalEscape(self.text[1:])};
+
 UNCLOSE_STRING: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*
     {raise UncloseString(self.text[1:])};
+ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\r\n\t'\\]
+    {raise IllegalEscape(self.text[1:])};
 STRINGLIT:
     UNCLOSE_STRING'"'
     {self.text = self.text[1:-1]};

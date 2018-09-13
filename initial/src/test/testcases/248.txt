@@ -1,5 +1,7 @@
-        procedure main(): string;
-        begin
-            
-        end
+
+procedure main();
+var a:integer;
+begin
+a := a = a and then b;
+end
         

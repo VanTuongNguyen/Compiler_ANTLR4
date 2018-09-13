@@ -1,5 +1,13 @@
-        procedure main();
-        begin
-            a := a[a[a[a[a[a[a[a[1]]]]]]]];
-        end
+
+Var 
+	surname: String;
+procedure main();
+Begin
+	Write("Enter your surname:");
+	readln(surname);
+	writeln();
+	writeln();
+	Writeln("Your full name is: ",name," ",surname);
+	readln();
+End
         

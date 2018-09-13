@@ -7,7 +7,7 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3>")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3=")
         buf.write("\u01a6\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
@@ -94,7 +94,7 @@ def serializedATN():
         buf.write("\7\60\2\2\u00ba\u00bb\5$\23\2\u00bb\u00bc\7+\2\2\u00bc")
         buf.write("\u00bd\7\24\2\2\u00bd\u00be\5\34\17\2\u00be!\3\2\2\2\u00bf")
         buf.write("\u00c6\7\62\2\2\u00c0\u00c6\7\63\2\2\u00c1\u00c6\7\64")
-        buf.write("\2\2\u00c2\u00c6\79\2\2\u00c3\u00c6\7\65\2\2\u00c4\u00c6")
+        buf.write("\2\2\u00c2\u00c6\78\2\2\u00c3\u00c6\7\65\2\2\u00c4\u00c6")
         buf.write("\5\64\33\2\u00c5\u00bf\3\2\2\2\u00c5\u00c0\3\2\2\2\u00c5")
         buf.write("\u00c1\3\2\2\2\u00c5\u00c2\3\2\2\2\u00c5\u00c3\3\2\2\2")
         buf.write("\u00c5\u00c4\3\2\2\2\u00c6#\3\2\2\2\u00c7\u00c8\b\23\1")
@@ -226,9 +226,9 @@ class MPParser ( Parser ):
                       "ADD", "SUB", "MUL", "DIV", "NOT", "MOD", "OR", "AND", 
                       "NEQ", "EQ", "LT", "GT", "LTE", "GTE", "IDIV", "LSB", 
                       "RSB", "COLON", "LB", "RB", "SEMI", "DDOT", "COMMA", 
-                      "INTLIT", "FLOATLIT", "BOOLLIT", "ID", "LEGAL_ESCAPE", 
-                      "ILLEGAL_ESCAPE", "UNCLOSE_STRING", "STRINGLIT", "COMMENT1", 
-                      "COMMENT2", "COMMENT3", "WS", "ERROR_CHAR" ]
+                      "INTLIT", "FLOATLIT", "BOOLLIT", "ID", "UNCLOSE_STRING", 
+                      "ILLEGAL_ESCAPE", "STRINGLIT", "COMMENT1", "COMMENT2", 
+                      "COMMENT3", "WS", "ERROR_CHAR" ]
 
     RULE_program = 0
     RULE_many_declarations = 1
@@ -336,15 +336,14 @@ class MPParser ( Parser ):
     FLOATLIT=49
     BOOLLIT=50
     ID=51
-    LEGAL_ESCAPE=52
+    UNCLOSE_STRING=52
     ILLEGAL_ESCAPE=53
-    UNCLOSE_STRING=54
-    STRINGLIT=55
-    COMMENT1=56
-    COMMENT2=57
-    COMMENT3=58
-    WS=59
-    ERROR_CHAR=60
+    STRINGLIT=54
+    COMMENT1=55
+    COMMENT2=56
+    COMMENT3=57
+    WS=58
+    ERROR_CHAR=59
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
