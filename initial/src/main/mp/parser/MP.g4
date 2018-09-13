@@ -13,7 +13,7 @@ options{
 }
 
 
-program:    many_declarations;
+program:    many_declarations EOF;
 many_declarations:
     declarations many_declarations | declarations;
 declarations:
@@ -211,7 +211,7 @@ fragment LEGAL_ESCAPE:
 
 UNCLOSE_STRING: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*
     {raise UncloseString(self.text[1:])};
-ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\r\n\t'\\]
+ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\t'\\]
     {raise IllegalEscape(self.text[1:])};
 STRINGLIT:
     UNCLOSE_STRING'"'
