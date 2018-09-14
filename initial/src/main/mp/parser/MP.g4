@@ -211,7 +211,7 @@ fragment LEGAL_ESCAPE:
 
 UNCLOSE_STRING: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*
     {raise UncloseString(self.text[1:])};
-ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\t'"\\]
+ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\t'\\]
     {raise IllegalEscape(self.text[1:])};
 STRINGLIT:
     UNCLOSE_STRING'"'
