@@ -1,10 +1,5 @@
-
-Var 
-   S : String;
-
-Procedure main();
-Begin
-	S := "Hey! How are you?";
-	Write(UpCase(S)); { "HEY! HOW ARE YOU?" }
-End
+        function main():real;
+        begin
+            
+        end
         

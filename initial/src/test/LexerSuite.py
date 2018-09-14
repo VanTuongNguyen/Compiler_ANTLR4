@@ -331,38 +331,38 @@ class LexerSuite(unittest.TestCase):
     # test illegal escape
     def test_illegal_escape_1(self):
         """test illegal escape"""
-        code = '"hello \' world"'
-        expect = 'Illegal Escape In String: hello \''
+        code = '"hello \h world"'
+        expect = 'Illegal Escape In String: hello \\h'
         self.assertTrue(TestLexer.test(code, expect, 152))
 
     def test_illegal_escape_2(self):
         """test illegal escape"""
-        code = '"hello" + "world \' hello'
-        expect = 'hello,+,Illegal Escape In String: world \''
+        code = '"hello" + "world hello'
+        expect = 'hello,+,Unclosed String: world hello'
         self.assertTrue(TestLexer.test(code, expect, 153))
 
     def test_illegal_escape_3(self):
         """test illegal escape"""
         code = '"hello \\ world"'
-        expect = 'Illegal Escape In String: hello \\'
+        expect = 'Illegal Escape In String: hello \\ '
         self.assertTrue(TestLexer.test(code, expect, 154))
 
     def test_illegal_escape_4(self):
         """test illegal escape"""
-        code = '"it\\\'s me. \t and"'
-        expect = 'Illegal Escape In String: it\\\'s me. \t'
+        code = '"it\\\'s me. \\t and"'
+        expect = 'it\\\'s me. \\t and,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 155))
 
     def test_illegal_escape_5(self):
         """test illegal escape"""
         code = '"abc \\" \\t \\n \\b \\\\ \\f \\r \\\' \\ ace"'
-        expect = 'Illegal Escape In String: abc \\" \\t \\n \\b \\\\ \\f \\r \\\' \\'
+        expect = 'Illegal Escape In String: abc \\" \\t \\n \\b \\\\ \\f \\r \\\' \\ '
         self.assertTrue(TestLexer.test(code, expect, 156))
 
     def test_illegal_escape_6(self):
         """test illegal escape"""
         code = '"hello \\x world"'
-        expect = 'Illegal Escape In String: hello \\'
+        expect = 'Illegal Escape In String: hello \\x'
         self.assertTrue(TestLexer.test(code, expect, 157))
 
     def test_illegal_escape_7(self):
@@ -398,8 +398,8 @@ class LexerSuite(unittest.TestCase):
 
     def test_all_4(self):
         """test all"""
-        code = '"hello \t world"'
-        expect = 'Illegal Escape In String: hello \t'
+        code = '"hello \\t world"'
+        expect = 'hello \\t world,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 163))
 
     def test_all_5(self):
@@ -411,7 +411,7 @@ class LexerSuite(unittest.TestCase):
     def test_all_6(self):
         """test all"""
         code = '"hello\b world"'
-        expect = 'Illegal Escape In String: hello\b'
+        expect = 'hello\b world,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 165))
 
     def test_all_7(self):
@@ -428,8 +428,8 @@ class LexerSuite(unittest.TestCase):
 
     def test_all_9(self):
         """test all"""
-        code = '+12.e+12'
-        expect = '+,12.,e,+,12,<EOF>'
+        code = '+12.e-12'
+        expect = '+,12.e-12,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 168))
 
     def test_all_10(self):
@@ -482,8 +482,8 @@ class LexerSuite(unittest.TestCase):
 
     def test_all_18(self):
         """test all"""
-        code = '"ab\tab"'
-        expect = 'Illegal Escape In String: ab\t'
+        code = '"ab\\tab"'
+        expect = 'ab\\tab,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 177))
 
     def test_all_19(self):
@@ -495,7 +495,7 @@ class LexerSuite(unittest.TestCase):
     def test_all_20(self):
         """test all"""
         code = '"ab\hab"'
-        expect = 'Illegal Escape In String: ab\\'
+        expect = 'Illegal Escape In String: ab\\h'
         self.assertTrue(TestLexer.test(code, expect, 179))
 
     def test_all_21(self):
@@ -507,7 +507,7 @@ class LexerSuite(unittest.TestCase):
     def test_all_22(self):
         """test all"""
         code = "\"\\n\\f\\\n"
-        expect = 'Illegal Escape In String: \\n\\f\\'
+        expect = 'Illegal Escape In String: \\n\\f\\\n'
         self.assertTrue(TestLexer.test(code, expect, 181))
 
     def test_all_23(self):
@@ -548,8 +548,8 @@ class LexerSuite(unittest.TestCase):
 
     def test_all_29(self):
         """test all"""
-        code = '1.E+2+.1E-1E.3'
-        expect = '1.,E,+,2,+,.1E-1,E,.3,<EOF>'
+        code = '1.E-2+.1E-1E.3'
+        expect = '1.E-2,+,.1E-1,E,.3,<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 188))
 
     def test_all_30(self):
@@ -624,4 +624,8 @@ class LexerSuite(unittest.TestCase):
         expect = '<EOF>'
         self.assertTrue(TestLexer.test(code, expect, 200))
 
-    
+    def test_all_42(self):
+        """test all"""
+        code = '{{{{{{'
+        expect = 'Error Token {'
+        self.assertTrue(TestLexer.test(code, expect, 201))

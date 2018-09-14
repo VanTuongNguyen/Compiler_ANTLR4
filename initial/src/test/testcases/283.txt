@@ -1,5 +1,6 @@
-
-procedure main();
-begin
-    writeln("e0850a775c17a87060c0cf6efad1020e0cbef5a44ba942bef6add5776598de53");
-end
+        procedure main();
+        var a:array[1 .. 3] of array[1 .. 5] of array[1 .. 6] of real;
+        begin
+            __:=__;
+        end
+        

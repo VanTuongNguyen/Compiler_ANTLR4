@@ -1,1 +1,1 @@
-Illegal Escape In String: hello 	
+hello \t world,<EOF>

@@ -208,11 +208,11 @@ fragment LEGAL_ESCAPE:
     ;
 
 
-
+ILLEGAL_ESCAPE: UNCLOSE_STRING('\\'~[bftnr'"]?|'\'')
+    {raise IllegalEscape(self.text[1:])};
 UNCLOSE_STRING: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*
     {raise UncloseString(self.text[1:])};
-ILLEGAL_ESCAPE: '"'(~[\b\f\r\n\t'"\\]|LEGAL_ESCAPE)*[\b\f\t'\\]
-    {raise IllegalEscape(self.text[1:])};
+
 STRINGLIT:
     UNCLOSE_STRING'"'
     {self.text = self.text[1:-1]};
@@ -228,9 +228,10 @@ primitive_types:
 
 compound_types:
     array_types;
-
+bound:
+    SUB? INTLIT;
 array_types:
-    ARRAY LSB expression DDOT expression RSB OF primitive_types;
+    ARRAY LSB bound DDOT bound RSB OF primitive_types;
 
 operand:
     INTLIT
