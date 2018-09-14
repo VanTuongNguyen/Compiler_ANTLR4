@@ -1,0 +1,11 @@
+        procedure main();
+        begin
+            if a then
+                if b then
+                    fo();
+                else
+                    go();
+            else
+                ho();
+        end
+        

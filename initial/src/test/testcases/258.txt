@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            f(f(f(f())));
+        end
+        

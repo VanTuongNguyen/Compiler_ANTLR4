@@ -1,3 +1,5 @@
-int main () {
-            getIntLn();
-        }
+
+procedure foo();
+begin
+    if a = 1 print('OK');
+end

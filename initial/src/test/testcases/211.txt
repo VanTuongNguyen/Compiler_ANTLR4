@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            a := not Not NOT nOt - - - - - a;
+        end
+        

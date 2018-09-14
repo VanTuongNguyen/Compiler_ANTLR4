@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            a:= 1 and then 2;
+        end
+        

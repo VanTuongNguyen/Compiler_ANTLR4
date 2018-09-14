@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            with a:real; do with b:real; do with c:real; do fo();
+        end
+        
