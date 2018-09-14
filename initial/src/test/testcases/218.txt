@@ -1,0 +1,10 @@
+        procedure main();
+        begin
+            if a then
+                if b then
+                    if c then
+                        f();
+                    else g();
+                else c();
+        end
+        

@@ -1,0 +1,5 @@
+        procedure main();
+        begin
+            f()[f()] := a[f(a[a])];
+        end
+        

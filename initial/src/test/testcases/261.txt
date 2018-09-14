@@ -1,0 +1,8 @@
+        procedure main();
+        begin
+            {
+                hello 
+                word
+            }
+        end
+        

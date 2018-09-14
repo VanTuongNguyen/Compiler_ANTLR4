@@ -1,0 +1,5 @@
+        procedure main(a:array[1 .. 3] of real);
+        begin
+            
+        end
+        

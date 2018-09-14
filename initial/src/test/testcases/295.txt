@@ -1,0 +1,22 @@
+
+var
+   M: array[1 .. 3] of integer;
+
+function GCD(M: array[1 .. 3] of integer ): integer;
+   var i,min : integer;
+begin
+    min := M[0];
+    for i := 1 to Length(M)-1 do begin
+         if min > M[i] then
+            min := M[i];
+        end
+    i := 1;
+
+end
+
+procedure main();
+begin
+  M:=Create(15, 45, 25);
+  writeln("GCD: ", GCD(M));
+end
+        
