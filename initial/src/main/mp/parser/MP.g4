@@ -304,8 +304,8 @@ assignment_statement:
     |(ID | element_arr) ASSIGN expression SEMI;
 
 if_statement:
-    IF expression THEN statement ELSE statement
-    |IF expression THEN statement;
+    IF expression THEN statement (ELSE statement)?;
+    
 
 while_statement:
     WHILE expression DO statement;

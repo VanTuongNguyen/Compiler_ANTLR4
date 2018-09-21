@@ -27,10 +27,14 @@ class ParserSuite(unittest.TestCase):
     def test_index_exp_2(self):
         code = \
         """\
-        procedure main();
-        begin
-            a := a[1][2][3];
-        end
+        procedure abc ();
+var x , y : real ; 
+    begin
+        if x = y then
+           a:= 1000;
+        else;
+            b:= 999;
+    end
         """
         expect = "successful"
         self.assertTrue(TestParser.test(code,expect,203))
