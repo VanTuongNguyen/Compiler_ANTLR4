@@ -14,8 +14,10 @@ options{
 
 
 program:    many_declarations EOF;
+
 many_declarations:
     declarations many_declarations | declarations;
+    
 declarations:
     var_decl
     |func_decl
@@ -228,11 +230,11 @@ primitive_types:
 
 compound_types:
     array_types;
-bound:
-    SUB? INTLIT;
+
 array_types:
     ARRAY LSB bound DDOT bound RSB OF primitive_types;
-
+bound:
+    SUB? INTLIT;
 operand:
     INTLIT
     |FLOATLIT
@@ -333,7 +335,7 @@ with_statement:
     WITH list_decl DO statement;
 
 call_statement:
-    func_call SEMI;
+    ID LB exp_list RB SEMI;
 
 COMMENT1:   '(*'.*?'*)'  -> skip;
 COMMENT2:   '{'.*?'}' -> skip;
