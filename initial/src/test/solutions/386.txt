@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(IsEmpty),[],BoolType,[],[AssignStmt(Id(IsEmpty),BooleanLiteral(False)),If(BinaryOp(=,Id(topPointer),IntLiteral(0)),[AssignStmt(Id(IsEmpty),BooleanLiteral(True))],[])])])

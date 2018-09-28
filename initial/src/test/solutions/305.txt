@@ -1,1 +1,1 @@
-Error on line 4 col 25: else
+Program([VarDecl(Id(a),StringType),FuncDecl(Id(ma),[],VoidType(),[],[]),VarDecl(Id(c),FloatType),FuncDecl(Id(ma),[],FloatType,[],[])])

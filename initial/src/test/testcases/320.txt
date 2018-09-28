@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    while i do ok();
-end
+            procedure a();
+            begin
+                begin begin begin begin begin end end end end end
+            end
+        

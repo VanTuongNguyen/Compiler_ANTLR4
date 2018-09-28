@@ -1,6 +1,10 @@
 
-procedure foo();
-begin
-    if a = 1 then b := 2 else begin
-        b:=2
-end
+            var a: string;
+            procedure ma();
+            begin
+            end
+            var c: real;
+            function ma(): real;
+            begin
+            end
+        

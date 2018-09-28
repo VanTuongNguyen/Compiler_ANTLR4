@@ -1,5 +1,22 @@
 
-procedure foo();
-begin
-    a := (1 + 2 * 3 - 4 / 5 and 6 or then 7)[(1+2+3)-(4+5*6/abc and then (123))] := a[(((-5)))] := (((-5)))[a] := 0;
-end
+        procedure main();
+        Begin
+            Writeln("Please enter 5 numbers from (0..255): ");
+            
+            For i := 1 to Length(myArrayVar) do
+                Readln(myArrayVar[i]);
+            
+            Writeln("You have entered the following numbers: ");
+            
+            For i := 1 to Length(myArrayVar)do
+                Writeln("Number ",i,": ",myArrayVar[i]);
+            
+            Writeln("Now writing them to file...");   {store the numbers in a file}
+            Assign(myFile, "example.dat");
+            ReWrite(byteFile);
+            Write(myFile, myArrayVar[i]);
+            Close(myFile);
+            Writeln("Done, you may exit..");
+            Readln();
+        End 
+        

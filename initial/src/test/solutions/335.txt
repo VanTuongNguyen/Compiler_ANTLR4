@@ -1,1 +1,1 @@
-Error on line 28 col 5: *
+Program([FuncDecl(Id(main),[],VoidType(),[],[If(Id(a),[If(Id(b),[If(Id(c),[If(Id(d),[CallStmt(Id(e),[])],[])],[])],[])],[])])])

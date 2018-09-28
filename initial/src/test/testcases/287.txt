@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            f("a")["b"] := c("");
-        end
-        

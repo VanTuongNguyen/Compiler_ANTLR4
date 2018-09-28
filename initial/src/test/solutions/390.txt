@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(GetSize),[],IntType,[],[AssignStmt(Id(GetSize),Id(topPointer))])])

@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    with a do ok();
-end
+        procedure main();
+        begin
+            a := a[a[a]][a[a[a]]];
+        end 
+        

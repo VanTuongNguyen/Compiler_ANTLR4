@@ -108,7 +108,7 @@ class ASTGeneration(MPVisitor):
         if ctx.FLOATLIT():
             return FloatLiteral(float(ctx.FLOATLIT().getText()))
         if ctx.BOOLLIT():
-            return BooleanLiteral(bool(ctx.BOOLLIT().getText()))
+            return BooleanLiteral(bool((ctx.BOOLLIT().getText()).lower()=="true"))
         if ctx.STRINGLIT():
             return StringLiteral(ctx.STRINGLIT().getText())
         if ctx.ID():
@@ -140,7 +140,7 @@ class ASTGeneration(MPVisitor):
         if ctx.LTE():
             return BinaryOp(ctx.LTE().getText(),self.visit(ctx.expression_2(0)),self.visit(ctx.expression_2(1)))
         else:
-            return self.visit(ctx.expression_2())
+            return self.visit(ctx.expression_2(0))
     def visitExpression_2(self, ctx:MPParser.Expression_2Context):
         if ctx.ADD():
             return BinaryOp(ctx.ADD().getText(),self.visit(ctx.expression_2()),self.visit(ctx.expression_3()))
@@ -233,26 +233,14 @@ class ASTGeneration(MPVisitor):
                 return [Assign(self.visit(ctx.element_arr()),self.visit(ctx.expression()))]
         else:
             if ctx.ID():
-                if ctx.assignment_statement().ctx.ID():
-                    return self.visit(ctx.assignment_statement()) + [Assign(Id(ctx.ID().getText()),Id(self.visit(ctx.assignment_statement()).ID()))] 
-                else:
-                    return self.visit(ctx.assignment_statement()) + [Assign(Id(ctx.ID().getText()),self.visit(ctx.assignment_statement()).visit(element_arr()))] 
-                
-                    
+               
+                return self.visit(ctx.assignment_statement()) + [Assign(Id(ctx.ID().getText()),self.visit(ctx.assignment_statement())[-1].lhs)] 
+               
             else:
-                if ctx.assignment_statement().ctx.ID():
-                    return self.visit(ctx.assignment_statement()) + [Assign(self.visit(ctx.element_arr()),Id(self.visit(ctx.assignment_statement()).ID()))] 
-                else:
-                    return self.visit(ctx.assignment_statement()) + [Assign(self.visit(ctx.element_arr()),self.visit(ctx.assignment_statement()).visit(element_arr()))] 
+                return self.visit(ctx.assignment_statement()) + [Assign(self.visit(ctx.element_arr()),self.visit(ctx.assignment_statement())[-1].lhs)] 
                 
 
-###################################################
 
-#                       NEED FIX :
-# # Assign_stmt
-# Check all list
-# Check compound_stmt
-###################################################
 
 
 #If_stmt
@@ -260,7 +248,7 @@ class ASTGeneration(MPVisitor):
         if ctx.ELSE():
             return [If(self.visit(ctx.expression()) , self.visit(ctx.statement(0)) , self.visit(ctx.statement(1)))]
         else:
-            return [If(self.visit(ctx.expression()) , self.visit(ctx.statement()))]
+            return [If(self.visit(ctx.expression()) , self.visit(ctx.statement(0)))]
             
     
         
@@ -286,7 +274,7 @@ class ASTGeneration(MPVisitor):
 #Return_stmt
     def visitReturn_statement(self, ctx:MPParser.Return_statementContext):
         if ctx.expression():
-            return [Return(ctx.expression)]
+            return [Return(self.visit(ctx.expression()))]
         else:
             return [Return()]
 #Compound_stmt

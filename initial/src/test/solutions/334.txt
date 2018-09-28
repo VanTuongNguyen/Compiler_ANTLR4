@@ -1,1 +1,1 @@
-Error on line 7 col 47: break
+Program([FuncDecl(Id(main),[],VoidType(),[],[If(Id(a),[CallStmt(Id(f),[]),CallStmt(Id(g),[])],[If(Id(b),[CallStmt(Id(f),[])],[CallStmt(Id(c),[]),CallStmt(Id(d),[])])])])])

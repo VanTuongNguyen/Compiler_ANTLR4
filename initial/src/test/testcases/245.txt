@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            a := b = a;
-        end
-        

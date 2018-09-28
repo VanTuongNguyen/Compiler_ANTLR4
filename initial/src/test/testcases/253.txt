@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            12a := a12;
-        end
-        

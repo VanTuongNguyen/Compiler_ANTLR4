@@ -1,1 +1,1 @@
-Error on line 6 col 4: end
+Program([FuncDecl(Id(a),[],VoidType(),[],[]),FuncDecl(Id(b),[],VoidType(),[],[]),VarDecl(Id(a),StringType),VarDecl(Id(b),StringType),VarDecl(Id(c),FloatType),VarDecl(Id(d),FloatType),FuncDecl(Id(a),[],FloatType,[],[]),FuncDecl(Id(b),[],StringType,[],[]),VarDecl(Id(e),IntType),VarDecl(Id(f),IntType),FuncDecl(Id(a),[],VoidType(),[],[]),FuncDecl(Id(a),[],ArrayType(1,2,StringType),[],[])])

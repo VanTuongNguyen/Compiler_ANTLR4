@@ -1,0 +1,8 @@
+
+        Function IsFull(): Boolean;
+        Begin
+            IsFull := False;
+            If ((topPointer + 1) = STACK_SIZE) Then
+                IsFull := True;
+        End
+        

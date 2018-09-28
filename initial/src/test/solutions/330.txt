@@ -1,1 +1,1 @@
-Error on line 4 col 24: do
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),BinaryOp(+,Id(a),Id(b)))])])

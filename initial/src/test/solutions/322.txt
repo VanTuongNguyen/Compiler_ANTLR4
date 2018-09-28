@@ -1,1 +1,1 @@
-Error on line 5 col 0: end
+Program([FuncDecl(Id(a),[],VoidType(),[],[CallStmt(Id(f),[CallExpr(Id(f),[CallExpr(Id(f),[CallExpr(Id(f),[CallExpr(Id(f),[CallExpr(Id(f),[])])])])])])])])

@@ -1,9 +1,1 @@
-        procedure abc ();
-var x , y : real ; 
-    begin
-        if x = y then
-           a:= 1000;
-        else;
-            b:= 999;
-    end
-        
+int main( {}

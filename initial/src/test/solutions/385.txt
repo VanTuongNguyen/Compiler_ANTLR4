@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(InitStack),[],VoidType(),[],[AssignStmt(Id(topPointer),IntLiteral(0))])])

@@ -1,1 +1,1 @@
-Error on line 4 col 13: :=
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),BinaryOp(andthen,Id(a),IntLiteral(1))),AssignStmt(Id(c),BinaryOp(orelse,IntLiteral(1),IntLiteral(2)))])])

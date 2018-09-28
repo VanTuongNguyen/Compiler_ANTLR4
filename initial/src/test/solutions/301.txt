@@ -1,1 +1,1 @@
-'
+Program([FuncDecl(Id(a),[],VoidType(),[],[Return(None)]),FuncDecl(Id(b),[],IntType,[],[Return(None)])])

@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    a := (b+5*6)[d] := 5;
-end
+        procedure main();
+        begin
+            a:= - not - a;
+        end
+        

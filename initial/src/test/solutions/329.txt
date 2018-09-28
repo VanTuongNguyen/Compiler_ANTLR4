@@ -1,1 +1,1 @@
-successful
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),UnaryOp(not,UnaryOp(Not,UnaryOp(NOT,UnaryOp(nOt,UnaryOp(-,UnaryOp(-,UnaryOp(-,UnaryOp(-,UnaryOp(-,Id(a)))))))))))])])

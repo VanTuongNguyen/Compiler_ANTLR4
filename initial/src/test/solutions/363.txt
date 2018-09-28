@@ -1,1 +1,1 @@
-Error on line 5 col 9: (
+Program([FuncDecl(Id(posneg),[],VoidType(),[VarDecl(Id(no),IntType)],[CallStmt(Id(clrscr),[]),CallStmt(Id(Write),[StringLiteral(Enger a number:)]),CallStmt(Id(readln),[Id(no)]),If(BinaryOp(>,Id(no),IntLiteral(0)),[CallStmt(Id(writeln),[StringLiteral(You enter Positive Number)])],[If(BinaryOp(<,Id(no),IntLiteral(0)),[CallStmt(Id(writeln),[StringLiteral(You enter Negative number)])],[If(BinaryOp(=,Id(no),IntLiteral(0)),[CallStmt(Id(writeln),[StringLiteral(You enter Zero)])],[])])]),CallStmt(Id(readln),[])])])

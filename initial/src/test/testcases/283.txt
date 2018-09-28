@@ -1,6 +1,0 @@
-        procedure main();
-        var a:array[1 .. 3] of array[1 .. 5] of array[1 .. 6] of real;
-        begin
-            __:=__;
-        end
-        

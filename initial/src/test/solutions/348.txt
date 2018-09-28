@@ -1,1 +1,1 @@
-Error on line 26 col 0: begin
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),BinaryOp(orelse,BinaryOp(or,BinaryOp(or,Id(a),Id(b)),Id(c)),Id(d)))])])

@@ -1,1 +1,1 @@
-Error on line 6 col 0: <EOF>
+Program([FuncDecl(Id(main),[],VoidType(),[VarDecl(Id(myVar),IntType),VarDecl(Id(myArray),ArrayType(1,5,IntType))],[AssignStmt(ArrayCell(Id(myArray),IntLiteral(2)),IntLiteral(25)),AssignStmt(Id(myVar),ArrayCell(Id(myArray),IntLiteral(2)))])])

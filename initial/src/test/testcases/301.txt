@@ -1,6 +1,10 @@
 
-procedure foo();
-begin
-    if a = 1
-        print('OK');
-end
+            procedure a(); 
+			begin
+				return;
+			end
+			function b(): integer;
+			begin
+				return;
+			end
+        

@@ -1,5 +1,7 @@
 
-procedure foo();
-begin
-    a := b+5 := 5;
-end
+        procedure main();
+        begin
+            a := a and              then 1;
+            c := 1 or          else 2;
+        end
+        
