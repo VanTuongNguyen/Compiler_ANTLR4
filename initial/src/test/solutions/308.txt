@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[If(Id(a),[CallStmt(Id(foo),[IntLiteral(1),IntLiteral(2),IntLiteral(4)]),If(Id(b),[AssignStmt(Id(a),IntLiteral(1)),If(Id(c),[CallStmt(Id(foo),[IntLiteral(1),IntLiteral(2),IntLiteral(3)])],[CallStmt(Id(goo),[])])],[AssignStmt(Id(c),IntLiteral(1)),CallStmt(Id(foo),[IntLiteral(1),IntLiteral(3)])])],[CallStmt(Id(foo),[])])])])

@@ -1,6 +1,0 @@
-
-        procedure main();
-        begin
-            true[a] := false[b] := (----a)[a] := 1;
-        end
-        

@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(this_is_very_long_name),CallExpr(Id(VarDecl),[CallExpr(Id(Float),[]),CallExpr(Id(Id),[StringLiteral(abc)])]))])])

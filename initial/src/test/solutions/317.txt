@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(mmm),[],VoidType(),[],[AssignStmt(Id(a),CallExpr(Id(readln),[])),AssignStmt(Id(b),CallExpr(Id(readln),[])),AssignStmt(Id(c),BinaryOp(+,Id(a),Id(b))),Return(Some(Id(c)))])])

@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[For(Id(a)BinaryOp(+,BinaryOp(+,IntLiteral(1),IntLiteral(2)),ArrayCell(Id(a),Id(i))),CallExpr(Id(foo),[IntLiteral(1),IntLiteral(23)]),True,[For(Id(a)IntLiteral(1),IntLiteral(2),True,[For(Id(c)IntLiteral(1),IntLiteral(3),False,[CallStmt(Id(print),[StringLiteral(asfd)]),Return(None)])])])])])

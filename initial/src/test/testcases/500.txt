@@ -1,0 +1,3 @@
+ var i :integer; 
+            function f(): boolean; begin return false; end
+        procedure main(); begin   end

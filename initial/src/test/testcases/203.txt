@@ -1,1 +1,1 @@
-int main( {}
+procedure main( begin end

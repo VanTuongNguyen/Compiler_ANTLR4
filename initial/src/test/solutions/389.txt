@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(Push),[VarDecl(Id(item),IntType)],VoidType(),[],[If(UnaryOp(not,Id(IsFull)),[AssignStmt(ArrayCell(Id(myStack),BinaryOp(+,Id(topPointer),IntLiteral(1))),Id(item)),AssignStmt(Id(topPointer),BinaryOp(+,Id(topPointer),IntLiteral(1)))],[])])])

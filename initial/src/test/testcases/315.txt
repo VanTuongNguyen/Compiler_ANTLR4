@@ -1,9 +1,0 @@
-
-            procedure maiN();
-            begin
-                with a:real; c:string; do
-                    with e:real; e,f:array[1 .. 5] of real; do
-                        begin
-                        end
-            end
-        

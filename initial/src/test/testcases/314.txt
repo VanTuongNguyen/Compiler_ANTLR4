@@ -1,9 +1,0 @@
-
-            procedure main();
-            begin
-                with a,b,c:real; c,e:string; do
-                    begin
-                        return a+b+c;
-                    end
-            end
-        

@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(operators),[],VoidType(),[],[CallStmt(Id(clrscr),[]),CallStmt(Id(writeln),[BinaryOp(div,IntLiteral(17),IntLiteral(3))]),CallStmt(Id(readln),[]),CallStmt(Id(writeln),[BinaryOp(mod,IntLiteral(7),IntLiteral(4))]),CallStmt(Id(readln),[])])])

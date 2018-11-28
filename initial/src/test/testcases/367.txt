@@ -1,8 +1,0 @@
-
-        procedure one(); 
-        var P : String;  
-        begin  
-        P := "This is a null-terminated string.";  
-        WriteLn (P);  
-        end
-        

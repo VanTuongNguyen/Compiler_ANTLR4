@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),BinaryOp(>=,BinaryOp(+,UnaryOp(not,UnaryOp(-,Id(a))),BinaryOp(mod,BinaryOp(div,BinaryOp(*,Id(b),UnaryOp(-,Id(d))),IntLiteral(2)),Id(a))),BinaryOp(+,UnaryOp(-,UnaryOp(not,IntLiteral(3))),IntLiteral(4))))])])

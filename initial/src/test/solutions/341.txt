@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[While(IntLiteral(1),[Break,Continue,Return(None)]),Return(Some(BinaryOp(+,ArrayCell(Id(a),IntLiteral(1)),BinaryOp(*,IntLiteral(2),Id(b)))))])])

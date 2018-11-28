@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(Pop),[],IntType,[],[AssignStmt(Id(Pop),Id(nil)),If(UnaryOp(not,Id(IsEmpty)),[AssignStmt(Id(Pop),ArrayCell(Id(myStack),Id(topPointer))),AssignStmt(Id(topPointer),BinaryOp(-,Id(topPointer),IntLiteral(1)))],[])])])

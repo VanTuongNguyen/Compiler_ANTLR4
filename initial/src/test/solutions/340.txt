@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[For(Id(i)Id(a),Id(b),True,[For(Id(j)IntLiteral(1),IntLiteral(2),True,[For(Id(k)IntLiteral(1),IntLiteral(3),True,[CallStmt(Id(c),[])])])])])])

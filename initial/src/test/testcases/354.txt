@@ -1,6 +1,0 @@
-
-        procedure main();
-        begin
-            T:= true = false;
-        end
-        

@@ -1,6 +1,0 @@
-
-        procedure main();
-        begin
-            a:= a or b or c or else d;
-        end
-        

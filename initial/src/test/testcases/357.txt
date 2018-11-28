@@ -1,6 +1,0 @@
-
-        procedure main();
-        begin
-            a := b DiV a MoD c AnD ThEn b;
-        end
-        

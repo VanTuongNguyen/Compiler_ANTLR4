@@ -1,1 +1,0 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[CallStmt(Id(print),[StringLiteral(hello world \n hello \t hello \' hello \" hello )])])])

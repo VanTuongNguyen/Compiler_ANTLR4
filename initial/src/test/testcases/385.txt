@@ -1,6 +1,0 @@
-
-        Procedure InitStack();
-        Begin
-            topPointer := 0;
-        End
-        

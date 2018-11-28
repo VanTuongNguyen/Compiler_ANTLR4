@@ -95,9 +95,9 @@ class VarDecl(Decl):
 class FuncDecl(Decl):
     #name: Id
     #param: list(VarDecl)
+    #returnType: Type => VoidType for Procedure
     #local:list(VarDecl)
     #body: list(Stmt)
-    #returnType: Type => VoidType for Procedure
     def __init__(self, name, param, local, body, returnType=VoidType()):
         self.name = name
         self.param = param

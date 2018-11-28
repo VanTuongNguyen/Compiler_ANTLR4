@@ -1,9 +1,0 @@
-
-            PROcEdure mmm();
-            begin
-                a := readln();
-                b := readln();
-                c := a + b;
-                return c;
-            end
-        
