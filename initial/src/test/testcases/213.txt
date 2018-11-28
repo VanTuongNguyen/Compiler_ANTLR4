@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            a := (a)div(a)mod(a)/a-a+a*a;
-        end
-        

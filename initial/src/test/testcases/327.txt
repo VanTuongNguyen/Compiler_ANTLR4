@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    with do ok();
-end
+        procedure main();
+        begin
+            a[1] := a[a[a]] := a[a][a] := (a)[a] := a()[a] := a[(a)];
+        end
+        

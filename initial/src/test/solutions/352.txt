@@ -1,1 +1,1 @@
-successful
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(ArrayCell(CallExpr(Id(f),[ArrayCell(IntLiteral(2),IntLiteral(2))]),IntLiteral(1)),IntLiteral(1)),AssignStmt(ArrayCell(CallExpr(Id(f),[IntLiteral(20)]),IntLiteral(2)),ArrayCell(CallExpr(Id(f),[ArrayCell(IntLiteral(2),IntLiteral(2))]),IntLiteral(1))),AssignStmt(ArrayCell(Id(f),IntLiteral(2)),ArrayCell(CallExpr(Id(f),[IntLiteral(20)]),IntLiteral(2))),AssignStmt(ArrayCell(CallExpr(Id(f),[]),IntLiteral(1)),ArrayCell(Id(f),IntLiteral(2)))])])

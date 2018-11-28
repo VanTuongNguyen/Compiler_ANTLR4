@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    with a,b,c,d:string; f:integer do ok();
-end
+        procedure main();
+        begin
+            a := (a)div(a)mod(a)/a-a+a*a;
+        end 
+        

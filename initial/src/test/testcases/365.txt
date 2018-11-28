@@ -1,10 +1,31 @@
 
-procedure foo();
-begin
-    ok();
-    break;
-    continue;
-    begin
-        return 15 * 6 - 3;
-    end
-end
+        procedure learn();
+        var a,b,c,e,f,right: integer; d:real;
+        begin
+            textbackground(green);
+            textcolor(white);
+            e:=random(3)+1;
+            b:=random(200)+1;
+            c:=random(200)+1;
+            if e=1 then d:=b+c;
+            if e=2 then d:=b-c;
+            if e=3 then d:=b*c;
+            writeln(" ",b/3);
+            if e=1 then write("+ ");  
+            if e=2 then write("- ");
+            if e=3 then write("x ");
+            writeln(c/3);
+            writeln("______");
+            readln(a);
+            if a=d then
+                begin                                       
+                    inc(right);
+                    writeln("HORRAY! YOU GOT IT RIGHT! you have ",right," points!");
+                end
+            else
+                begin
+                    right:=right-1;
+                    writeln("WRONG! you have ",right," points");
+                end
+        end
+        

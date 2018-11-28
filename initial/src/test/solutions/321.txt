@@ -1,1 +1,1 @@
-Error on line 5 col 0: end
+Program([FuncDecl(Id(a),[],VoidType(),[],[AssignStmt(Id(a),FloatLiteral(1.2)),AssignStmt(Id(b),FloatLiteral(21.0)),AssignStmt(Id(c),FloatLiteral(0.01)),AssignStmt(Id(d),FloatLiteral(31.0)),AssignStmt(Id(f),FloatLiteral(4e+22)),AssignStmt(Id(g),UnaryOp(-,FloatLiteral(0.01))),AssignStmt(Id(b),UnaryOp(-,FloatLiteral(32.0))),AssignStmt(Id(g),UnaryOp(-,FloatLiteral(0.14)))])])

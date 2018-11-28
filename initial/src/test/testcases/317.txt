@@ -1,5 +1,9 @@
 
-procedure foo();
-begin
-    for i := to 10 do ok();
-end
+            PROcEdure mmm();
+            begin
+                a := readln();
+                b := readln();
+                c := a + b;
+                return c;
+            end
+        

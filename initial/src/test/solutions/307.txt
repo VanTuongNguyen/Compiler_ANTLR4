@@ -1,1 +1,1 @@
-Error on line 5 col 0: end
+Program([FuncDecl(Id(main),[],VoidType(),[],[If(Id(a),[CallStmt(Id(foo),[])],[]),If(Id(a),[AssignStmt(Id(a),IntLiteral(1))],[AssignStmt(Id(c),IntLiteral(1))])])])

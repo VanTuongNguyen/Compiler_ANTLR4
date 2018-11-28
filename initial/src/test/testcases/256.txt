@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            f(1 or else 2);
-        end
-        

@@ -1,5 +1,11 @@
 
-procedure foo();
-begin
-    for i := 1 to 10: ok();
-end
+            procedure main();
+            begin
+                while (a+b = a[i]) do
+                    begin
+                        a := 1;
+                        foo(1,2,3);
+                        return;
+                    end
+            end
+        

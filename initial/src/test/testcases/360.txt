@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    a := a[d<4] := 5;
-end
+        procedure main();
+        begin
+            
+        end
+        

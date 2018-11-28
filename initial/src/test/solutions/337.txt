@@ -1,1 +1,1 @@
-Error on line 15 col 4: end
+Program([FuncDecl(Id(main),[],VoidType(),[],[While(Id(a),[While(Id(b),[While(Id(c),[CallStmt(Id(d),[])])])])])])

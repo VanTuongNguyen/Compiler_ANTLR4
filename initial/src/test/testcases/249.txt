@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            a:= a<>1;
-        end
-        

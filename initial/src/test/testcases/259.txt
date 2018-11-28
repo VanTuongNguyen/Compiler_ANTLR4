@@ -1,6 +1,0 @@
-        procedure main();
-        var a: array[ 1 . . 2] of real;
-        begin
-            
-        end
-        

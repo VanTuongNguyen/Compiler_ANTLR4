@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    with a: string do ok();
-end
+        procedure main();
+        begin
+            a := not - a + b * -d div 2 mod a >= - not 3 + 4;
+        end 
+        

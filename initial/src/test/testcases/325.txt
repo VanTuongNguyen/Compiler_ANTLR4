@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    loop i<4 do ok();
-end
+        procedure main();
+        begin
+            a := a[1][2][3];
+        end 
+        

@@ -1,1 +1,1 @@
-successful
+Program([FuncDecl(Id(Lesson2_Program1),[],VoidType(),[VarDecl(Id(name),StringType),VarDecl(Id(surname),StringType)],[CallStmt(Id(write),[StringLiteral(Enter your name:)]),CallStmt(Id(readln),[Id(name)]),CallStmt(Id(write),[StringLiteral(Enter your surname:)]),CallStmt(Id(readln),[Id(surname)]),CallStmt(Id(writeln),[]),CallStmt(Id(writeln),[]),CallStmt(Id(writeln),[StringLiteral(Your full name is: ),Id(name),StringLiteral( ),Id(surname)]),CallStmt(Id(readln),[])])])

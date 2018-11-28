@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            print("hello world \n hello \t hello \' hello \" hello ");
-        end
-        

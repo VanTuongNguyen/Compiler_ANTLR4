@@ -1,5 +1,0 @@
-        procedure main();
-        begin
-            a:= (Not 5 + 1)[2];
-        end
-        

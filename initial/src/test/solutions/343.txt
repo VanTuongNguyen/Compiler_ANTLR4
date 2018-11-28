@@ -1,1 +1,1 @@
-Error on line 31 col 49: )
+Program([FuncDecl(Id(main),[],VoidType(),[],[CallStmt(Id(foo),[IntLiteral(1),IntLiteral(2),IntLiteral(3),IntLiteral(4)]),With([VarDecl(Id(a),IntType),VarDecl(Id(b),IntType),VarDecl(Id(c),IntType),VarDecl(Id(d),FloatType),VarDecl(Id(e),ArrayType(1,2,BoolType)),VarDecl(Id(g),StringType)],[Return(Some(CallExpr(Id(foo),[IntLiteral(12),IntLiteral(3),Id(a),Id(b)])))])])])

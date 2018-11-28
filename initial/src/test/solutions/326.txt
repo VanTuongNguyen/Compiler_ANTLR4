@@ -1,1 +1,1 @@
-Error on line 4 col 11: do
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),ArrayCell(ArrayCell(Id(a),ArrayCell(Id(a),Id(a))),ArrayCell(Id(a),ArrayCell(Id(a),Id(a)))))])])

@@ -1,5 +1,1 @@
-        procedure main();
-        begin
-
-        end
-        
+int main() {}

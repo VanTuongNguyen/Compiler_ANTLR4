@@ -1,0 +1,17 @@
+
+        function bsearch(a : array[1 .. 2] of integer; n, key : integer) : integer;
+        var ll, rr, i : integer;
+        begin
+            ll := 1; rr := n; i := (ll+rr) div 2;
+            while (ll<>i) and (rr<>i) do
+            begin
+                if a[i]>=key
+                then rr := i;
+                else ll := i;
+                i := (ll+rr) div 2;
+            end
+            for i := ll to rr do
+            if a[i]>=key then exit(i);
+            exit(0);
+        end
+        

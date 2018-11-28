@@ -1,0 +1,27 @@
+
+        procedure main();
+        var i, j, k : integer;
+            answer : integer; //
+        begin
+
+            readln(n);
+            answer := low(answer);
+
+            for i := 1 to n do
+            for j := 1 to n do
+                read(a[i][j]);
+
+            for i := 1 to n do
+            for j := i to n do
+            for k := 1 to n do
+                a:=0;
+            //s[i][j][k] := s[i][j-1][k] + a[j][k];
+
+            for i := 1 to n do
+            for j := i to n do
+                a:=0;
+            //maximize(answer, maximumSum(s[i][j][1..n]));
+
+            writeln(answer);
+        end 
+        

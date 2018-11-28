@@ -1,7 +1,0 @@
-        function main(a,c:string):integer;
-            var c:string;
-            e: integer;
-        begin
-            
-        end
-        

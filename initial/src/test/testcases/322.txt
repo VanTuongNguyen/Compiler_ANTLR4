@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    while i do ok
-end
+            procedure a();
+            begin
+                f(f(f(f(f(f())))));
+            end
+        

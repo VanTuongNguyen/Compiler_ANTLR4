@@ -84,13 +84,13 @@ class MPVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MPParser#bound.
-    def visitBound(self, ctx:MPParser.BoundContext):
+    # Visit a parse tree produced by MPParser#array_types.
+    def visitArray_types(self, ctx:MPParser.Array_typesContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MPParser#array_types.
-    def visitArray_types(self, ctx:MPParser.Array_typesContext):
+    # Visit a parse tree produced by MPParser#bound.
+    def visitBound(self, ctx:MPParser.BoundContext):
         return self.visitChildren(ctx)
 
 

@@ -1,0 +1,32 @@
+
+        procedure SetupGraphicsWindow(title: integer);
+        var
+            gd, gm : integer;
+        begin
+        gm := vgahi;
+        gd := vga;
+        
+        InitGraph(gd, gm, " ");
+        
+        if GraphResult <> grOk then
+        begin
+            Writeln("Graph driver ",gd," graph mode ",gm," not supported");
+            Halt(1);
+        end
+            
+        WindowsSetWindowText(GraphWindow, title);
+        end
+            
+        //All draws the circles to the screen.
+        procedure Main();
+        begin
+        Randomize();
+        SetupGraphicsWindow("Screen Saver Sample");
+            
+        //You can set the colors to RGB values
+        //The following code sets index 1 to (0, 255, 0) = Green
+        //SetRGBPalette(1, 0, 255, 0);
+                
+        SetLineStyle(SolidLn, 0, ThickWidth);
+        end 
+        

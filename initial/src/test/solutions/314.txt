@@ -1,1 +1,1 @@
-successful
+Program([FuncDecl(Id(main),[],VoidType(),[],[With([VarDecl(Id(a),FloatType),VarDecl(Id(b),FloatType),VarDecl(Id(c),FloatType),VarDecl(Id(c),StringType),VarDecl(Id(e),StringType)],[Return(Some(BinaryOp(+,BinaryOp(+,Id(a),Id(b)),Id(c))))])])])

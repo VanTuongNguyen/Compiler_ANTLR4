@@ -1,1 +1,1 @@
-Error on line 8 col 15: return
+Program([FuncDecl(Id(one),[],VoidType(),[VarDecl(Id(P),StringType)],[AssignStmt(Id(P),StringLiteral(This is a null-terminated string.)),CallStmt(Id(WriteLn),[Id(P)])])])

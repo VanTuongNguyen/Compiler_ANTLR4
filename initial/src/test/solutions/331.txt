@@ -1,1 +1,1 @@
-Error on line 4 col 35: do
+Program([FuncDecl(Id(main),[],VoidType(),[],[AssignStmt(Id(a),BinaryOp(+,BinaryOp(-,BinaryOp(/,BinaryOp(mod,BinaryOp(div,Id(a),Id(a)),Id(a)),Id(a)),Id(a)),BinaryOp(*,Id(a),Id(a))))])])

@@ -1,5 +1,16 @@
 
-procedure foo();
-begin
-    if a = 1 then b := 2 else begin
-end
+            procedure a(a,b,c:real; c,e,f:array[1 .. 3] of real);
+            var a,b,c: string;
+            c,d: array[1 .. -4] of real;
+            e,f: integer;
+			begin
+				return;
+			end
+			function a(a,b,c:real; c,e,f:array[1 .. 3] of real): real;
+            var a,b,c: string;
+            c,d: array[1 .. -4] of real;
+            e,f: integer; 
+			begin
+				return;
+			end
+        

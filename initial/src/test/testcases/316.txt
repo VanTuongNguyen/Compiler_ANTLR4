@@ -1,5 +1,10 @@
 
-procedure foo();
-begin
-    for i := 1 to do ok();
-end
+            procedure MaIn();
+            begin
+                a := b := c:= d := foo(1,2,30);
+                print("Hello world");
+                for i:=1 to 10 do
+                    print(i);
+                return fo(1,fo());
+            end
+        

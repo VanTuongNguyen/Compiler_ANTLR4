@@ -1,0 +1,1 @@
+Program([FuncDecl(Id(IsFull),[],BoolType,[],[AssignStmt(Id(IsFull),BooleanLiteral(False)),If(BinaryOp(=,BinaryOp(+,Id(topPointer),IntLiteral(1)),Id(STACK_SIZE)),[AssignStmt(Id(IsFull),BooleanLiteral(True))],[])])])

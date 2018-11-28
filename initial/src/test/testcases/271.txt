@@ -1,6 +1,0 @@
-        var ____:real;
-        procedure main();
-        begin
-            
-        end
-        

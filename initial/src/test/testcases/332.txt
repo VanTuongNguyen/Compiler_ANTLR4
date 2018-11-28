@@ -1,5 +1,11 @@
 
-procedure foo();
-begin
-    with a,b,c,d:string; f,:integer; do ok();
-end
+        procedure main();
+        begin
+            if a then
+                if b then
+                    if c then
+                        f();
+                    else g();
+                else c();
+        end 
+        

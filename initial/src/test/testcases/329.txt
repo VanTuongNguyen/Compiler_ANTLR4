@@ -1,5 +1,6 @@
 
-procedure foo();
-begin
-    with a:string; do ok();
-end
+        procedure main();
+        begin
+            a := not Not NOT nOt - - - - - a;
+        end           
+        

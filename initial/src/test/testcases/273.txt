@@ -1,7 +1,0 @@
-        procedure main();
-        var a:real;
-        var b:real;
-        begin
-            
-        end
-        
