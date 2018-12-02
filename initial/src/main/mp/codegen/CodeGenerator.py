@@ -15,13 +15,13 @@ from StaticCheck import *
 from StaticError import *
 from Emitter import Emitter
 from Frame import Frame
-from abc import ABC, abstractmethod
 from CodeGenError import *
 from functools import reduce
 
 class CodeGenerator(Utils):
     def __init__(self):
         self.libName = "io"
+        self.curFunc = Symbol("null", MType([], VoidType()), CName("MPClass"))
 
     def init(self):
         return [    Symbol("getInt", MType(list(), IntType()), CName(self.libName)),
@@ -83,7 +83,7 @@ class SubBody():
 
 # use in Expression Body
 class Access():
-    def __init__(self, frame, sym, isLeft, isFirst):
+    def __init__(self, frame, sym, isLeft, isFirst, isDup = False):
         #frame: Frame
         #sym: List[Symbol]
         #isLeft: Boolean
@@ -181,8 +181,8 @@ class CodeGenVisitor(BaseVisitor, Utils):
     def arrayTypeDecl(self,ast,c):
         #ast : VarDecl
         #c   : any
-
-        index = (self.lookup(ast.variable.name,c.sym,lambda x:x.name)).value.value
+        
+        index = (self.lookup(ast.variable.name.lower(),c.sym,lambda x:x.name.lower())).value.value
         self.emit.printout(self.emit.emitNEWARRAY(ast.varType, c.frame))
         self.emit.printout(self.emit.emitWRITEVAR(ast.variable.name, ast.varType, index, c.frame))
         return SubBody(c.frame, c.sym)
@@ -214,7 +214,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
             self.emit.printout(self.emit.emitVAR(frame.getNewIndex(), "args", ArrayPointerType(StringType()), frame.getStartLabel(), frame.getEndLabel(), frame))
         # param decl other functions
         funcSubBody = SubBody(frame,glenv)
-        if intype != [] :
+        if (isMain is False) and intype != [] :
             funcSubBody = reduce(lambda a,b: self.visit(b,a), consdecl.param, funcSubBody) 
         # variables decl in local
         if consdecl.local != []:
@@ -225,8 +225,8 @@ class CodeGenVisitor(BaseVisitor, Utils):
         self.emit.printout(self.emit.emitLABEL(frame.getStartLabel(), frame))
         
         #gen code for local array
-        lsArrVarDecl = list(filter(lambda x:type(x.varType) is ArrayType, consdecl.param))
-        lsArrVarDecl += list(filter(lambda x:type(x.varType) is ArrayType, consdecl.local))
+        # lsArrVarDecl = list(filter(lambda x:type(x.varType) is ArrayType, consdecl.param))
+        lsArrVarDecl = list(filter(lambda x:type(x.varType) is ArrayType, consdecl.local))
         for x in lsArrVarDecl:
             self.arrayTypeDecl(x,funcSubBody)
         
@@ -236,13 +236,14 @@ class CodeGenVisitor(BaseVisitor, Utils):
             self.emit.printout(self.emit.emitINVOKESPECIAL(frame))
         
         body = consdecl.body
+        returnStmt = list(filter(lambda x:type(x) is Return, consdecl.body))
 
         # list(map(lambda x: self.visit(x, funcSubBody), body))
         for x in body:
             self.visit(x,funcSubBody)
 
         self.emit.printout(self.emit.emitLABEL(frame.getEndLabel(), frame))
-        if type(returnType) is VoidType:
+        if (type(returnType) is VoidType) or (not returnStmt):      
             self.emit.printout(self.emit.emitRETURN(VoidType(), frame))
         self.emit.printout(self.emit.emitENDMETHOD(frame))
         frame.exitScope()
@@ -270,84 +271,310 @@ class CodeGenVisitor(BaseVisitor, Utils):
     #     (resLeft, typeLeft) = self.visit(ast.lhs,Access(frame,env,True,))
 
 
-    def visitBinaryOp(self,ast,c):
-        #c : Access
-        ctxt = c
-        frame = ctxt.frame
-        env = ctxt.sym
+    
 
-        op = ast.op
-        op_Str = ""
-        str_Dup = "" 
-        str_I2f = "" 
-        resType = IntType()
+    # def visitBinaryOp(self,ast,c):
+    #     #c : Access
+    #     ctxt = c
+    #     frame = ctxt.frame
+    #     env = ctxt.sym
 
-        (resLeft, typeLeft) = self.visit(ast.left,Access(frame,env,True,False))
-        (resRight, typeRight) = self.visit(ast.right,Access(frame,env,False,False))
-        if op == "+" or op == "-":
-            if type(typeLeft) is FloatType and type(typeRight) is IntType:
-                op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitADDOP(op,FloatType(),frame)
-                resType = FloatType()
-            elif type(typeLeft) is IntType and type(typeRight) is FloatType:
-                op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitADDOP(op, FloatType(), frame)
-                resType = FloatType()
-            else:
-                op_Str = resLeft + resRight + self.emit.emitADDOP(op, typeLeft, frame)
-                resType = typeLeft
-        elif op == "*":
-            if type(typeLeft) is FloatType and type(typeRight) is IntType:
-                op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
-                resType = FloatType()
-            elif type(typeLeft) is IntType and type(typeRight) is FloatType:
-                op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitMULOP(op, FloatType(), frame)
-                resType = FloatType()
-            else:
-                op_Str = resLeft + resRight + self.emit.emitMULOP(op, typeLeft, frame)
-                resType = typeLeft
+    #     op = ast.op.lower()
+    #     op_Str = ""
+    #     resType = IntType()
 
-        elif op == "/":
-            if type(typeLeft) is FloatType and type(typeRight) is IntType:
-                op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
+        
+    #     (resLeft, typeLeft) = self.visit(ast.left,Access(frame,env,False,True))
+    #     (resRight, typeRight) = self.visit(ast.right,Access(frame,env,False,True))
+        
+        
+    #     if op == "+" or op == "-":
+    #         if type(typeLeft) is FloatType and type(typeRight) is IntType:
+    #             op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitADDOP(op,FloatType(),frame)
+    #             resType = FloatType()
+    #         elif type(typeLeft) is IntType and type(typeRight) is FloatType:
+    #             op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitADDOP(op, FloatType(), frame)
+    #             resType = FloatType()
+    #         else:
+    #             op_Str = resLeft + resRight + self.emit.emitADDOP(op, typeLeft, frame)
+    #             resType = typeLeft
+    #     if op == "*":
+    #         if type(typeLeft) is FloatType and type(typeRight) is IntType:
+    #             op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
+    #             resType = FloatType()
+    #         elif type(typeLeft) is IntType and type(typeRight) is FloatType:
+    #             op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitMULOP(op, FloatType(), frame)
+    #             resType = FloatType()
+    #         else:
+    #             op_Str = resLeft + resRight + self.emit.emitMULOP(op, typeLeft, frame)
+    #             resType = typeLeft
+
+    #     if op == "/":
+    #         if type(typeLeft) is FloatType and type(typeRight) is IntType:
+    #             op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
                 
-            elif type(typeLeft) is IntType and type(typeRight) is FloatType:
-                op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitMULOP(op, FloatType(), frame)
-            elif type(typeLeft) is IntType and type(typeRight) is IntType:
-                op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
-            else:
-                op_Str = resLeft + resRight + self.emit.emitMULOP(op, typeLeft, frame)
-            resType = FloatType()
-        elif op == "div":
-            op_Str = resLeft + resRight + self.emit.emitDIV(frame)
-        elif op == "mod": 
-            op_Str = resLeft + resRight + self.emit.emitMOD(frame)
-            resType = IntType()
+    #         elif type(typeLeft) is IntType and type(typeRight) is FloatType:
+    #             op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitMULOP(op, FloatType(), frame)
+    #         elif type(typeLeft) is IntType and type(typeRight) is IntType:
+    #             op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitI2F(frame) + self.emit.emitMULOP(op, FloatType(), frame)
+    #         else:
+    #             op_Str = resLeft + resRight + self.emit.emitMULOP(op, typeLeft, frame)
+    #         resType = FloatType()
+    #     if op == "div":
+    #         op_Str = resLeft + resRight + self.emit.emitDIV(frame)
+    #     if op == "mod": 
+    #         op_Str = resLeft + resRight + self.emit.emitMOD(frame)
+    #         resType = IntType()
 
-        elif (op == "<") or (op == "<=") or (op == ">") or (op == ">="): 
-            if type(typeLeft) is FloatType and type(typeRight) is IntType:
-                op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitREOP(op, FloatType(), frame)
-            elif type(typeLeft) is IntType and type(typeRight) is FloatType:
-                op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitREOP(op, FloatType(), frame)
-            else:
-                op_Str = resLeft + resRight + self.emit.emitREOP(op, typeLeft, frame)
-            resType = BoolType()
-        elif (op == "=") or (op == "<>"): 
-            op_Str = resLeft + resRight + self.emit.emitREOP(op, IntType(), frame)
-            resType = BoolType()
-        elif (op == "and") or (op == "or"): 
-            op_Str = self.emit.emitAND_OR_SHORT_CIRCUIT(op, resLeft, resRight, frame)
-            resType = BoolType()
-        return (op_Str,resType)
+    #     if (op == "<") or (op == "<=") or (op == ">") or (op == ">="): 
+    #         if type(typeLeft) is FloatType and type(typeRight) is IntType:
+    #             op_Str = resLeft + resRight + self.emit.emitI2F(frame) + self.emit.emitREOP(op, FloatType(), frame)
+    #         elif type(typeLeft) is IntType and type(typeRight) is FloatType:
+    #             op_Str = resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitREOP(op, FloatType(), frame)
+    #         else:
+    #             op_Str = resLeft + resRight + self.emit.emitREOP(op, typeLeft, frame)
+    #         resType = BoolType()
+    #     if (op == "=") or (op == "<>"): 
+    #         op_Str = resLeft + resRight + self.emit.emitREOP(op, IntType(), frame)
+    #         resType = BoolType()
+    #     if (op == "andthen") or (op == "orelse"): 
+    #         op_Str = self.emit.emitAND_OR_SHORT_CIRCUIT(op, resLeft, resRight, frame)
+    #         resType = BoolType()
+    #     if op == "and":
+    #         op_Str = resLeft + resRight + self.emit.emitANDOP(frame)
+    #         resType = BoolType()
+    #     if op == "or":
+    #         op_Str = resLeft + resRight + self.emit.emitOROP(frame)
+    #         resType = BoolType()
+    #     return (op_Str,resType)
+    def genBinExpr(self, frame, resLeft, typeLeft, resRight, typeRight, isFloat = False):
+        if type(typeLeft) is FloatType and type(typeRight) is IntType:
+            return resLeft + resRight + self.emit.emitI2F(frame), FloatType()
+        if type(typeLeft) is IntType and type(typeRight) is FloatType:
+            return resLeft + self.emit.emitI2F(frame) + resRight, FloatType()
+        if isFloat and type(typeLeft) is IntType:
+            return resLeft + self.emit.emitI2F(frame) + resRight + self.emit.emitI2F(frame), FloatType()
+        return resLeft + resRight, typeLeft
+
+    def visitBinaryOp(self, ast, c):
+        _frame = c.frame
+        _sym = c.sym
+        op = ast.op
+        (resLeft, typeLeft) = self.visit(ast.left, Access(_frame, _sym, False, True, True))
+        (resRight, typeRight) = self.visit(ast.right, Access(_frame, _sym, False, True, True))
+        
+        if op == "/":
+            _exp, _type = self.genBinExpr(_frame, resLeft, typeLeft, resRight, typeRight, True)
+            _op = self.emit.emitMULOP(op, FloatType(), _frame)
+            _string = _exp + _op
+            return _string, _type
+            
+        _exp, _type = self.genBinExpr(_frame, resLeft, typeLeft, resRight, typeRight)
+        if op in ["andthen", "orelse"]: 
+            _string = self.emit.emitAND_OR_SHORT_CIRCUIT(op, resLeft, resRight, _frame)
+            return _string, _type
+            
+        if op in ["+", "-"]:
+            _op = self.emit.emitADDOP(op, _type, _frame)
+        elif op == "*":
+            _op = self.emit.emitMULOP(op, _type, _frame)
+        elif op.lower() == "div":
+            _op = self.emit.emitDIV(_frame)
+        elif op.lower() == "mod":
+            _op = self.emit.emitMOD(_frame)
+        elif op in ["<", "<=", ">", ">="]:
+            _op = self.emit.emitREOP(op, _type, _frame)
+            _type = BoolType()
+        elif op in ["=", "<>"]:
+            _op = self.emit.emitREOP(op, _type, _frame)
+            _type = BoolType()
+        elif op.lower() == "and":
+            _op = self.emit.emitANDOP(_frame)
+            _type = BoolType()
+        elif op.lower() == "or":
+            _op = self.emit.emitOROP(_frame)
+            _type = BoolType()
+        _string = _exp + _op   
+        
+        return _string, _type
 
     def visitUnaryOp(self,ast,c):
         ctxt = c
         frame = ctxt.frame
         env = ctxt.sym
         (resExpr, typeExpr) = self.visit(ast.body, Access(frame, env, False, True))
+        
         if ast.op == "not":
-            return (resExpr + self.emit.emitNOT(typeExpr, frame), typeExpr)
+            return (resExpr + self.emit.emitNOT(BoolType(), frame), BoolType())
         elif ast.op == "-": 
             return (resExpr + self.emit.emitNEGOP(typeExpr, frame), typeExpr)
 
+    def visitCallExpr(self, ast, c):
+        ctxt = c
+        frame = ctxt.frame
+        nenv = ctxt.sym
+        sym = self.lookup(ast.method.name.lower(), nenv, lambda x: x.name.lower())
+        cname = sym.value.value
+        ctype = sym.mtype
+        returnType = ctype.rettype
+        
+        if ctxt.isLeft and not ctxt.isFirst:
+            return self.emit.emitWRITEVAR2(ast.method.name, returnType, frame), returnType
+            
+        listParamType = ctype.partype
+        checkList = []
+        for item in range(len(listParamType)):
+            checkList.append((ast.param[item], listParamType[item]))
+            
+        in_ = ("", [])
+        
+        for x in checkList:
+            (str1, typ1) = self.visit(x[0], Access(frame, nenv, False, True, True))
+            if type(x[1]) is ArrayType:
+                str1 += self.emit.emitCLONE(typ1) + self.emit.emitCHECKCAST(typ1)
+            if type(typ1) is IntType and type(x[1]) is FloatType:
+                in_ = (in_[0] + str1 + self.emit.emitI2F(frame), in_[1] + [typ1])
+            else:
+                in_ = (in_[0] + str1, in_[1] + [typ1])
+                
+        return in_[0] + self.emit.emitINVOKESTATIC(cname + "/" + sym.name, ctype, frame), returnType
+    
+    def visitId(self, ast, c):
+        if type(c) != SubBody:
+            sym = self.lookup(ast.name.lower(), c.sym, lambda x: x.name.lower())
+            code = ""
+            if c.isLeft is True and c.isFirst is True:
+                pass
+            elif c.isLeft is True and c.isFirst is False:
+                if type(sym.mtype) is ArrayType or type(sym.mtype) is ArrayPointerType:
+                    code = self.emit.emitWRITEVAR2(sym.name, sym.mtype, c.frame)
+                else:
+                    if type(sym.value) is CName:
+                        code = self.emit.emitPUTSTATIC(sym.value.value + "." + sym.name, sym.mtype, c.frame)
+                    elif type(sym.value) is Index:
+                        code = self.emit.emitWRITEVAR(sym.name, sym.mtype, sym.value.value, c.frame)
+            elif c.isLeft is False:
+                if type(sym.value) is CName:
+                    code = self.emit.emitGETSTATIC(sym.value.value + "." + sym.name, sym.mtype, c.frame)
+                elif type(sym.value) is Index:
+                    code = self.emit.emitREADVAR(ast, sym.mtype, sym.value.value, c.frame)
+            return code, sym.mtype
+        else:
+            sym = self.lookup(ast.name.lower(), c.sym, lambda x: x.name.lower())
+            return ("", sym.mtype)
+    def visitArrayCell(self, ast, c):
+        if type(c) != SubBody:
+            frame = c.frame
+            lsSym = c.sym
+
+            arrt = self.lookup(ast.arr.method.name.lower() if type(ast.arr) is CallExpr else ast.arr.name.lower(), lsSym, lambda x: x.name.lower())
+            lw = int(arrt.mtype.rettype.lower) if type(arrt.mtype) is MType else int(arrt.mtype.lower)
+
+            if c.isLeft is True and c.isFirst is True:
+                (resArr, typeArr) = self.visit(ast.arr, Access(frame, lsSym, False, True, False))
+                if lw >= 0:
+                    (resIdx, typIdx) = self.visit(BinaryOp("-", ast.idx, IntLiteral(lw)), Access(frame, lsSym, False, True, True))
+                else:
+                    (resIdx, typIdx) = self.visit(BinaryOp("+", ast.idx, IntLiteral(- lw)), Access(frame, lsSym, False, True, True))
+                return (resArr + resIdx, typeArr.eleType)
+            
+            elif c.isLeft is True and c.isFirst is False:
+                (resArr, typeArr) = self.visit(ast.arr, Access(frame, lsSym, True, False, False))
+                return (resArr, typeArr)
+            
+            elif c.isLeft is False:
+                (resArr, typeArr) = self.visit(ast.arr, Access(frame, lsSym, False, True, False))
+                if lw >= 0:
+                    (resIdx, typIdx) = self.visit(BinaryOp("-", ast.idx, IntLiteral(lw)), Access(frame, lsSym, False, True, True))
+                else:
+                    (resIdx, typIdx) = self.visit(BinaryOp("+", ast.idx, IntLiteral(- lw)), Access(frame, lsSym, False, True, True))
+                
+                if type(typeArr) is ArrayType:
+                    arrayType = typeArr.eleType
+                    aload = self.emit.emitALOAD(arrayType, frame)
+                    return (resArr + resIdx + aload, arrayType)
+                elif type(typeArr) is ArrayPointerType:
+                    arrayPointerType = typeArr.eleType
+                    aload = self.emit.emitALOAD(arrayPointerType, frame)
+                    return (resArr + resIdx + aload, arrayPointerType)
+        else:
+            frame = c.frame
+            lsSym = c.sym
+            (resArr, typeArr) = self.visit(ast.arr, Access(frame, lsSym, False, True, False))
+            arrType = typeArr.eleType
+            return ("", arrayType)
+        
+
+    def visitAssign(self, ast, c):
+        ctxt = c
+        frame = ctxt.frame
+        env = ctxt.sym
+        op_Str = ""
+        str_I2f = "" 
+        resType = IntType()
+        print(ast)
+        (resLeft1, typeLeft1) = self.visit(ast.lhs, Access(frame, env, True, True))
+        (resRight, typeRight) = self.visit(ast.exp,Access(frame, env, False, True))
+
+        if type(typeLeft1) == FloatType and type(typeRight) == IntType:
+            str_I2f = self.emit.emitI2F(frame)
+        
+        (resLeft2, typeLeft2) = self.visit(ast.lhs, Access(frame, env, True, False))
+        
+        _fcp, _type = self.genBinExpr(frame, resLeft1, typeLeft1, resRight, typeRight)
+        _string = _fcp + resLeft2
+        
+        self.emit.printout(_string)
+        return (_string, _type)
+    
+    def visitWith(self, ast, c):
+        ctxt = c
+        frame = ctxt.frame
+        newEnv = ctxt.sym
+        
+        frame.enterScope(False)
+        
+        varEnv = functools.reduce(lambda a, b: self.visit(b, a), ast.decl, SubBody(frame, newEnv))
+        
+        # list Vardecl
+        listVarDecl = ast.decl
+        listArrayVarDecl = filter(lambda x: type(x.varType) is ArrayType, listVarDecl)
+        
+        self.emit.printout(self.emit.emitLABEL(frame.getStartLabel(), frame))
+        [self.arrayTypeDecl(x, varEnv) for x in listArrayVarDecl]
+        [self.visit(x, varEnv) for x in ast.stmt]
+        self.emit.printout(self.emit.emitLABEL(frame.getEndLabel(), frame))
+        frame.exitScope()
+        return None
+
+    def visitFor(self, ast, c):
+        frame = c.frame
+        env = c.sym
+        beginLabel = frame.getNewLabel()
+        frame.enterLoop()
+
+        self.visit(Assign(ast.id, ast.expr1), SubBody(frame, env))
+        self.emit.printout(self.emit.emitLABEL(beginLabel, frame))
+        if ast.up:
+            (resExpr2, typeExpr2) = self.visit(BinaryOp("<=", ast.id, ast.expr2), Access(frame, env, False, True, False))
+        else:
+            (resExpr2, typeExpr2) = self.visit(BinaryOp(">=", ast.id, ast.expr2), Access(frame, env, False, True, False))
+        self.emit.printout(resExpr2)
+        self.emit.printout(self.emit.emitIFFALSE(frame.getBreakLabel(), frame))
+        [self.visit(i, c) for i in ast.loop]
+        
+        self.emit.printout(self.emit.emitLABEL(frame.getContinueLabel(), frame))
+        if ast.up:
+            self.visit(Assign(ast.id, BinaryOp("+", ast.id, IntLiteral(1))), c)
+        else:
+            self.visit(Assign(ast.id, BinaryOp("-", ast.id, IntLiteral(1))), c)
+        self.emit.printout(self.emit.emitGOTO(beginLabel, frame))
+        self.emit.printout(self.emit.emitLABEL(frame.getBreakLabel(), frame))
+        
+        frame.exitLoop()
+        return None
+
+        
 
     def visitIf(self, ast, c):
         # c: SubBody
@@ -395,51 +622,112 @@ class CodeGenVisitor(BaseVisitor, Utils):
     def visitReturn(self,ast,c):
         if ast.expr:
             (resExpr,resType) = self.visit(ast.expr, Access(c.frame,c.sym,False,True))
-            print(resExpr,resType,self.curFunc.mtype.rettype)
             typeFunc = self.curFunc.mtype.rettype
             if type(typeFunc) == FloatType and type(resType) == IntType:
                 self.emit.printout(resExpr + self.emit.emitI2F(c.frame) + self.emit.emitRETURN(FloatType(),c.frame))
             else:
                 self.emit.printout(resExpr + self.emit.emitRETURN(resType,c.frame))
         else:
-            self.emit.emitRETURN(VoidType(),c.frame)
-
-    def visitCallExpr(self,ast,o):
+            self.emit.printout(self.emit.emitRETURN(VoidType(), c.frame))
+            
+        return None
+    # def visitCallExpr(self,ast,o):
         
-        ctxt = o
-        frame = ctxt.frame
-        env = ctxt.sym
-        sym = self.lookup(ast.method.name,env,lambda x: x.name)
-        cname = sym.value.value
-        ctype = sym.mtype
-        returnType = ctype.rettype
+    #     ctxt = o
+    #     frame = ctxt.frame
+    #     env = ctxt.sym
+    #     sym = self.lookup(ast.method.name,env,lambda x: x.name)
+    #     cname = sym.value.value
+    #     ctype = sym.mtype
+    #     returnType = ctype.rettype
 
-        if ctxt.isLeft is True and ctxt.isFirst is False:
-            return (self.emit.emitWRITEVAR2())
-    def visitCallStmt(self, ast, o):
-        #ast: CallStmt
-        #o: Any
-        ctxt = o
+    #     if ctxt.isLeft is True and ctxt.isFirst is False:
+    #         return (self.emit.emitWRITEVAR2(ast.method.name,returnType,frame))
+        
+    def visitCallStmt(self, ast, c):
+        ctxt = c
         frame = ctxt.frame
         nenv = ctxt.sym
-        sym = self.lookup(ast.method.name, nenv, lambda x: x.name)
+        sym = self.lookup(ast.method.name.lower(), nenv, lambda x: x.name.lower())
         cname = sym.value.value
-    
+
         ctype = sym.mtype
-
+        
+        listParamType = ctype.partype
+        checkList = []
+        for item in range(len(listParamType)):
+            checkList.append((ast.param[item], listParamType[item]))
+        
         in_ = ("", list())
-        for x in ast.param:
-            str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
-            in_ = (in_[0] + str1, in_[1].append(typ1))
-        self.emit.printout(in_[0])
-        self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+        
+        for x in checkList:
+            (str1, typ1) = self.visit(x[0], Access(frame, nenv, False, True))
+            if type(x[1]) is ArrayType:
+                str1 += self.emit.emitCLONE(typ1) + self.emit.emitCHECKCAST(typ1)
+            if type(typ1) is IntType and type(x[1]) is FloatType:
+                in_ = (in_[0] + str1 + self.emit.emitI2F(frame), in_[1] + [typ1])
+            else:
+                in_ = (in_[0] + str1, in_[1] + [typ1])
 
+        self.emit.printout(in_[0])
+        self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + sym.name, ctype, frame))
+        return None
+    
+    # def visitId(self, ast,o):
+    #     # o : Access (SubBody)
+
+    #     if type(o) != SubBody: 
+    #         sym  = self.lookup(ast.name, o.sym, lambda x: x.name)
+
+    #         code = ""
+    #         if o.isLeft is True and o.isFirst is True:
+    #             pass
+    #         elif o.isLeft is True and o.isFirst is False:
+    #             if type(sym.mtype) is ArrayType or type(sym.mtype) is ArrayPointerType:
+    #                 code = self.emit.emitWRITEVAR2(ast.name, sym.mtype, o.frame)
+    #             else:
+    #                 if type(sym.value) is CName:
+    #                     code = self.emit.emitPUTSTATIC(sym.value.value + "." + ast.name, sym.mtype, o.frame)
+    #                 elif type(sym.value) is Index:
+    #                     code = self.emit.emitWRITEVAR(ast.name, sym.mtype, sym.value.value, o.frame) 
+
+    #         elif o.isLeft is False:
+    #             if type(sym.value) is CName:
+    #                 code = self.emit.emitGETSTATIC(sym.value.value + "." + ast.name, sym.mtype, o.frame)
+    #             elif type(sym.value) is Index:
+    #                 code = self.emit.emitREADVAR(ast, sym.mtype, sym.value.value, o.frame)
+                    
+    #         return (code,sym.mtype)
+    #     else:
+    #         sym  = self.lookup(ast.name, o.sym, lambda x: x.name)
+    #         return ("",sym.mtype)
+    
+    # def visitAssign(self,ast,c):
+    #     ctxt = c
+    #     frame = ctxt.frame
+    #     env = ctxt.sym
+    #     op = ast.op
+    #     op_Str = ""
+    #     str_I2f = "" 
+    #     resType = IntType()
+
+    #     (resLeft, typeLeft) = self.visit(ast.left, Access(frame, env, True, True, False))
+    #     (resRight, typeRight) = self.visit(ast.right,Access(frame, env, False, True, True))
+
+    #     if type(typeLeft) == FloatType and type(typeRight) == IntType:
+    #         str_I2f = self.emit.emitI2F(frame)    
+    #     op_Str = resLeft + resRight + str_I2f 
+    #     resType = typeLeft
+    #     self.emit.printout(op_Str)
+    
+    
     def visitIntLiteral(self, ast, o):
         #ast: IntLiteral
         #o: Any
 
         ctxt = o
         frame = ctxt.frame
+        
         return self.emit.emitPUSHICONST(ast.value, frame), IntType()
 
     def visitFloatLiteral(self, ast, o):

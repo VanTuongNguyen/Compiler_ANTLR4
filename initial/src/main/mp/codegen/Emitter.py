@@ -60,6 +60,9 @@ class Emitter():
                 return self.jvm.emitBIPUSH(i)
             elif i >= -32768 and i <= 32767:
                 return self.jvm.emitSIPUSH(i)
+            else:
+                return self.jvm.emitLDC(""+str(i)) 
+       
         elif type(in_) is str:
             if in_.lower() == "true":
                 return self.emitPUSHICONST(1, frame)
@@ -92,9 +95,13 @@ class Emitter():
         
         if type(typ) is IntType:
             return self.emitPUSHICONST(in_, frame)
-        elif type(typ) is StringType:
+        elif type(typ) is FloatType:
+            return self.emitPUSHFCONST(in_, frame)
+        elif type(typ) is BoolType:
+            return self.emitPUSHICONST(1 if in_ is True else 0, frame)
+        elif type(typ) is cgen.StringType:
             frame.push()
-            return self.jvm.emitLDC(in_)
+            return self.jvm.emitLDC("\"" + in_ + "\"")
         else:
             raise IllegalOperandException(in_)
 
@@ -108,7 +115,11 @@ class Emitter():
         frame.pop()
         if type(in_) is IntType:
             return self.jvm.emitIALOAD()
-        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is StringType:
+        if type(in_) is FloatType:
+            return self.jvm.emitFALOAD()
+        if type(in_) is BoolType:
+            return self.jvm.emitBALOAD()
+        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is cgen.StringType or type(in_) is StringType or type(in_) is ArrayType:
             return self.jvm.emitAALOAD()
         else:
             raise IllegalOperandException(str(in_))
@@ -123,7 +134,11 @@ class Emitter():
         frame.pop()
         if type(in_) is IntType:
             return self.jvm.emitIASTORE()
-        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is StringType:
+        if type(in_) is BoolType:
+            return self.jvm.emitBASTORE()
+        if type(in_) is FloatType:
+            return self.jvm.emitFASTORE()
+        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is cgen.StringType or type(in_) is ArrayType or type(in_) is StringType:
             return self.jvm.emitAASTORE()
         else:
             raise IllegalOperandException(str(in_))
@@ -155,11 +170,14 @@ class Emitter():
         frame.push()
         if type(inType) is IntType:
             return self.jvm.emitILOAD(index)
-        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is StringType:
+        if type(inType) is FloatType:
+            return self.jvm.emitFLOAD(index)
+        if type(inType) is BoolType:
+            return self.jvm.emitILOAD(index)
+        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is cgen.StringType or type(inType) is ArrayType or type(inType) is StringType:
             return self.jvm.emitALOAD(index)
         else:
             raise IllegalOperandException(name)
-
     ''' generate the second instruction for array cell access
     *
     '''
@@ -170,7 +188,10 @@ class Emitter():
         #... -> ..., value
 
         #frame.push()
+        if type(typ) is ArrayType:
+            emitALOAD(typ.eleType, frame)
         raise IllegalOperandException(name)
+        
 
     '''
     *   generate code to pop a value on top of the operand stack and store it to a block-scoped variable.
@@ -206,6 +227,8 @@ class Emitter():
         #..., value -> ...
 
         #frame.push()
+        if type(typ) is ArrayType or type(typ) is ArrayPointerType:
+            return self.emitASTORE(typ.eleType,frame)
         raise IllegalOperandException(name)
 
     ''' generate the field (static) directive for a class mutable or immutable attribute.
@@ -469,23 +492,53 @@ class Emitter():
         frame.pop()
         frame.pop()
         if op == ">":
-            result.append(self.jvm.emitIFICMPLE(labelF))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFLE(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPLE(labelF))
         elif op == ">=":
-            result.append(self.jvm.emitIFICMPLT(labelF))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFLT(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPLT(labelF))
         elif op == "<":
-            result.append(self.jvm.emitIFICMPGE(labelF))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFGE(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPGE(labelF))
         elif op == "<=":
-            result.append(self.jvm.emitIFICMPGT(labelF))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFGT(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPGT(labelF))
         elif op == "<>":
-            result.append(self.jvm.emitIFICMPEQ(labelF))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFEQ(labelF))
+            elif (type(in_) is cgen.ClassType) or (type(in_) is ArrayType) or (type(in_) is cgen.StringType) or (type(in_) is cgen.ArrayPointerType):
+                result.append(self.jvm.emitIFACMPEQ(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPEQ(labelF))
         elif op == "=":
-            result.append(self.jvm.emitIFICMPNE(labelF))
-        result.append(self.emitPUSHCONST("1", IntType(), frame))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFNE(labelF))
+            elif (type(in_) is cgen.ClassType) or (type(in_) is ArrayType) or (type(in_) is cgen.StringType) or (type(in_) is cgen.ArrayPointerType):
+                result.append(self.jvm.emitIFACMPNE(labelF))
+            else:
+                result.append(self.jvm.emitIFICMPNE(labelF))
+
+        result.append(self.emitPUSHCONST(1, IntType(), frame))
         frame.pop()
-        result.append(self.emitGOTO(labelO, frame))
-        result.append(self.emitLABEL(labelF, frame))
-        result.append(self.emitPUSHCONST("0", IntType(), frame))
-        result.append(self.emitLABEL(labelO, frame))
+        result.append(self.emitGOTO(str(labelO), frame))
+        result.append(self.emitLABEL(str(labelF), frame))
+        result.append(self.emitPUSHCONST(0, IntType(), frame))
+        result.append(self.emitLABEL(str(labelO), frame))
+
         return ''.join(result)
 
     def emitRELOP(self, op, in_, trueLabel, falseLabel, frame):
@@ -496,23 +549,57 @@ class Emitter():
         #frame: Frame
         #..., value1, value2 -> ..., result
 
-        result = list()
+        result = [] 
 
         frame.pop()
         frame.pop()
         if op == ">":
-            result.append(self.jvm.emitIFICMPLE(falseLabel))
-            result.append(self.emitGOTO(trueLabel))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFLE(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPLE(falseLabel))
+                result.append(self.jvm.emitGOTO(trueLabel))
+
         elif op == ">=":
-            result.append(self.jvm.emitIFICMPLT(falseLabel))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFLT(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPLT(falseLabel))
+
         elif op == "<":
-            result.append(self.jvm.emitIFICMPGE(falseLabel))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFGE(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPGE(falseLabel))
+
         elif op == "<=":
-            result.append(self.jvm.emitIFICMPGT(falseLabel))
-        elif op == "<>":
-            result.append(self.jvm.emitIFICMPEQ(falseLabel))
-        elif op == "=":
-            result.append(self.jvm.emitIFICMPNE(falseLabel))
+            if type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFGT(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPGT(falseLabel))
+
+        elif op == "!=":
+            if (type(in_) is cgen.ClassType) or (type(in_) is ArrayType) or (type(in_) is cgen.StringType) or (type(in_) is cgen.ArrayPointerType):
+                result.append(self.jvm.emitIFACMPEQ(falseLabel))
+            elif type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFEQ(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPEQ(falseLabel))
+
+        elif op == "==":
+            if (type(in_) is cgen.ClassType) or (type(in_) is ArrayType) or (type(in_) is cgen.StringType) or (type(in_) is cgen.ArrayPointerType):
+                result.append(self.jvm.emitIFACMPNE(falseLabel))
+            elif type(in_) is FloatType:
+                result.append(self.jvm.emitFCMPL())
+                result.append(self.jvm.emitIFNE(falseLabel))
+            else:
+                result.append(self.jvm.emitIFICMPNE(falseLabel))
+    
         result.append(self.jvm.emitGOTO(trueLabel))
         return ''.join(result)
 
@@ -532,7 +619,7 @@ class Emitter():
         labelX = frame.getNewLabel()
         labelY = frame.getNewLabel()
         
-        if op == "or":
+        if op == "orelse":
             result.append(left)
             result.append(self.jvm.emitIFGT(labelX))
             frame.pop()
@@ -545,7 +632,7 @@ class Emitter():
             result.append(self.emitLABEL(labelX,frame))
             result.append(self.emitPUSHCONST(1, IntType(), frame))
             result.append(self.emitLABEL(labelY,frame))
-        elif op == "and":
+        elif op == "andthen":
             result.append(left)
             result.append(self.jvm.emitIFLE(labelX))
             frame.pop()
@@ -582,7 +669,12 @@ class Emitter():
         #ast: Literal
         if type(ast) is IntLiteral:
             return (str(ast.value), IntType())
-
+        elif type(ast) is BooleanLiteral:
+            return (str(ast.value), BoolType())
+        elif type(ast) is FloatLiteral:
+            return (str(ast.value), FloatType())
+        elif type(ast) is StringLiteral:
+            return (str(ast.value), cgen.StringType())
     '''   generate code to initialize a local array variable.<p>
     *   @param index the index of the local variable.
     *   @param in the type of the local array variable.
@@ -736,10 +828,11 @@ class Emitter():
         file.write(''.join(self.buff))
         file.close()
 
+    
     ''' print out the code to screen
     *   @param in the code to be printed out
     '''
-    def printout(self, in_):
+    def printout(self, in_ ,fl=False):
         #in_: String
 
         self.buff.append(in_)
@@ -747,7 +840,11 @@ class Emitter():
     def clearBuff(self):
         self.buff.clear()
 
-
+    def emitCLONE(self, type_):
+        return self.jvm.INDENT + "invokevirtual " + self.getJVMType(type_) + "/clone()Ljava/lang/Object;\n"
+        
+    def emitCHECKCAST(self, type_):
+        return self.jvm.INDENT + "checkcast " + self.getJVMType(type_) + "\n"
 
 
 
